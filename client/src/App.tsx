@@ -4,11 +4,11 @@ import axios from "axios";
 
 interface productoType {
   _id: string;
-  id: string;
-  name: string;
+  codigo: string;
+  articulo: string;
   costo: string;
   precio: string;
-  precioDesc: string;
+  fecha: string;
   imagen: string;
 }
 
@@ -30,9 +30,9 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      await axios
-        .get("https://buscar-precios-copy-art.vercel.app/api/v1/productos")
-        .then((res) => setProductos(res.data.documentos));
+      await axios.get("http://127.0.0.1:5000/api/getall")
+      .then(res => setProductos(JSON.parse(res.data)))
+      .catch(err => console.log(err))
     })();
   }, []);
 
@@ -162,7 +162,7 @@ const App = () => {
                 Precio
               </th>
               <th scope="col" className="px-6 py-3">
-                Descuento
+                Fecha
               </th>
             </tr>
           </thead>
@@ -174,22 +174,22 @@ const App = () => {
                     <img
                       className="w-full h-full"
                       src={producto.imagen}
-                      alt={producto.name}
+                      alt={producto.articulo}
                     />
                   </td>
                   <td
                     scope="row"
                     className="px-6 py-4 font-medium whitespace-nowrap dark:text-white"
                   >
-                    {producto.id}
+                    {producto.codigo}
                   </td>
-                  <td className="px-6 py-4 text-gray-900">{producto.name}</td>
+                  <td className="px-6 py-4 text-gray-900">{producto.articulo}</td>
                   <td className="px-6 py-4 text-gray-900">{producto.costo}</td>
                   <td className="px-6 py-4 font-bold text-gray-900">
                     {producto.precio}
                   </td>
                   <td className="px-6 py-4 text-gray-900">
-                    {producto.precioDesc}
+                    {producto.fecha}
                   </td>
                 </tr>
               );

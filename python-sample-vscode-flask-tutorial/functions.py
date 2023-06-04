@@ -12,10 +12,13 @@ def upload_excel():
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d")
     outpath_path = f"precios_{fecha_actual}.xlsx"
     df_excel["PRECIO CON IVA"] =  [round(x) for x in df_excel["PRECIO CON IVA"].to_list()]
-    filas_filtradas = df_excel[df_excel["CÓDIGO"].isin(codigos)]
+    codigos_limpios = list(set(codigos))
+    filas_filtradas = df_excel[df_excel["CÓDIGO"].isin(codigos_limpios)]
+    codigos_excel = filas_filtradas["CÓDIGO"].to_list()
     columnas = [round(x) for x in filas_filtradas["PRECIO CON IVA"].to_list()]
     filas_filtradas.insert(3, "Precio", [round(x * 1.5) for x in columnas] )
-    return filas_filtradas, outpath_path  
+    
+    return filas_filtradas, outpath_path,codigos_excel 
     # json =  filas_filtradas.to_json(orient='records')
     # filas_filtradas.to_excel(outpath_path, index=False)
 
