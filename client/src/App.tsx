@@ -65,19 +65,19 @@ const App = () => {
     if (archivoActualizar) {
       const data = new FormData();
       data.append("file", archivoActualizar!);
-      await axios.post("http://localhost:3000/api/v1/productos/update", data);
+      await axios({method: "post", url: "http://127.0.0.1:5000/api/upload", responseType: "blob", data })
+      .then(response => {
+        const url = URL.createObjectURL(response.data);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'precios.xlsx';
+        link.click();
+      })
+
     }
   };
 
-  const sendDjango = async () => {
-    if (archivoActualizar) {
-      const data = new FormData();
-      data.append("file", archivoActualizar!);
-      await axios.post("http://127.0.0.1:5000/api/upload", data)
-        .then(res => console.log(JSON.parse(res.data)))
-        .catch(err => console.log(err))
-    }
-  }
 
   return (
     <div>
@@ -220,7 +220,6 @@ const App = () => {
           </div>
         </div>
       </div>
-      <button className="w-[20%] h-[10%]" onClick={sendDjango}>Enviar mensaje a Flask</button>
     </div>
   );
 };
