@@ -21,7 +21,6 @@ interface dolarBlueType {
 
 const App = () => {
   const [productos, setProductos] = useState<productoType[]>([]);
-  const [preciosExcel, setPreciosExcel] = useState([]);
   const [buscador, setBuscador] = useState<string>("");
   const [dolarBlue, setDolarBlue] = useState<dolarBlueType>({
     value_avg: 0,
@@ -83,8 +82,7 @@ const App = () => {
       data.append("file", archivoActualizar!);
       await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
       .then(response => {
-        setPreciosExcel(JSON.parse(response.data))
-        exportToExcel(preciosExcel, 'precios_excel')
+        exportToExcel(JSON.parse(response.data), 'precios_excel')
       })
     }
     
