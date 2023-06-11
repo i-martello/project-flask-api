@@ -83,7 +83,7 @@ const App = () => {
       data.append("file", archivoActualizar!);
       await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
       .then(response => setPreciosExcel(JSON.parse(response.data)))
-
+      exportToExcel(preciosExcel, 'precios_excel')
     }
     
   };
@@ -109,9 +109,6 @@ const App = () => {
           >
             Actualizar
           </button>
-          <button onClick={() => exportToExcel(preciosExcel, 'precios_excel')}>        
-          Download Excel
-          </button> 
         </div>
       </div>
       <div>
