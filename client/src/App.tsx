@@ -82,8 +82,10 @@ const App = () => {
       const data = new FormData();
       data.append("file", archivoActualizar!);
       await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
-      .then(response => setPreciosExcel(JSON.parse(response.data)))
-      exportToExcel(preciosExcel, 'precios_excel')
+      .then(response => {
+        setPreciosExcel(JSON.parse(response.data))
+        exportToExcel(preciosExcel, 'precios_excel')
+      })
     }
     
   };
