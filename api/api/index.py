@@ -48,6 +48,8 @@ def upload():
   
   collection.insert_many(data_dict)
   
+  precios_excel.drop("imagen", axis=1, inplace=True)
+  
   return jsonify(precios_excel.to_json(orient="records"))
   #return send_file(outpath_path, as_attachment = True)
 

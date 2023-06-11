@@ -31,9 +31,10 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      await axios.get("https://precioscopyart-api.vercel.app/api/getall")
-      .then(res => setProductos(JSON.parse(res.data)))
-      .catch(err => console.log(err))
+      await axios
+        .get("https://precioscopyart-api.vercel.app/api/getall")
+        .then((res) => setProductos(JSON.parse(res.data)))
+        .catch((err) => console.log(err));
     })();
   }, []);
 
@@ -80,14 +81,22 @@ const App = () => {
     if (archivoActualizar) {
       const data = new FormData();
       data.append("file", archivoActualizar!);
-      await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
-      .then(response => {
-        exportToExcel(JSON.parse(response.data), 'precios_excel')
-      })
-    }
-    
-  };
+      await axios({
+        method: "post",
+        url: "https://precioscopyart-api.vercel.app/api/upload",
+        data,
+      }).then((response) => {
+        const currentDate = new Date();
 
+        // Formatear la fecha
+        const formattedDate = currentDate.toISOString().slice(0, 10);
+        
+        // Generar el nombre del archivo con la fecha actual
+        const fileName = `precios_${formattedDate}.txt`;
+        exportToExcel(JSON.parse(response.data), fileName);
+      });
+    }
+  };
 
   return (
     <div>
@@ -193,14 +202,14 @@ const App = () => {
                   >
                     {producto.codigo}
                   </td>
-                  <td className="px-6 py-4 text-gray-900">{producto.articulo}</td>
+                  <td className="px-6 py-4 text-gray-900">
+                    {producto.articulo}
+                  </td>
                   <td className="px-6 py-4 text-gray-900">{producto.costo}</td>
                   <td className="px-6 py-4 font-bold text-gray-900">
                     {producto.precio}
                   </td>
-                  <td className="px-6 py-4 text-gray-900">
-                    {producto.fecha}
-                  </td>
+                  <td className="px-6 py-4 text-gray-900">{producto.fecha}</td>
                 </tr>
               );
             })}
