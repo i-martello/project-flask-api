@@ -30,7 +30,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      await axios.get("http://127.0.0.1:5000/api/getall")
+      await axios.get("https://precioscopyart-api.vercel.app/api/getall")
       .then(res => setProductos(JSON.parse(res.data)))
       .catch(err => console.log(err))
     })();
@@ -48,7 +48,7 @@ const App = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .get("https://buscar-precios-copy-art.vercel.app/api/v1/productos", {
+      .get("https://precioscopyart-api.vercel.app/api/v1/productos", {
         params: { search: buscador },
       })
       .then((res) => setProductos(res.data.documentos));
@@ -65,7 +65,7 @@ const App = () => {
     if (archivoActualizar) {
       const data = new FormData();
       data.append("file", archivoActualizar!);
-      await axios({method: "post", url: "http://127.0.0.1:5000/api/upload", responseType: "blob", data })
+      await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", responseType: "blob", data })
       .then(response => {
         const url = URL.createObjectURL(response.data);
 
