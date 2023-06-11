@@ -1,3 +1,5 @@
+import io
+import requests
 from flask import Flask, request, jsonify
 from markupsafe import escape
 import pandas as pd
@@ -6,8 +8,11 @@ import datetime
 
 def upload_excel():  
   def excel(codigos):
-    file_excel = request.files['file']
-    df_excel = pd.read_excel(file_excel, skiprows=9)  
+    url = "https://www.papelerabariloche.com.ar/lista-precios" 
+    cookies = {"SofMic.Shops.PapeleraBariloche.Web.Auth": "8CB1A761993276169AD63CD164B07D594166CB8E139FB463EB6CECB299895743663FB02FFB83A8CE0A9FF8643EBC3120064D4BE2569B90AAB76B548A20176C0F22C8BDF8E3172978245202B557100D818212AE13595DD54FBF57C527DE24AF80AABB9E5DB5577C4C74D2340F72A708ED6E2B4EAF21C35DB2E1B153C3B4864530"}
+    response = requests.get(url, cookies=cookies) 
+    contenido_excel = response.content 
+    df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
     df_excel = df_excel.drop(df_excel.columns[[0,5,6,7,8]], axis=1)
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d")
     outpath_path = f"precios_{fecha_actual}.xlsx"

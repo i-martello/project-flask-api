@@ -27,7 +27,6 @@ const App = () => {
     value_buy: 0,
     value_sell: 0,
   });
-  const [archivoActualizar, setArchivoActualizar] = useState<File>();
 
   useEffect(() => {
     (async () => {
@@ -56,13 +55,6 @@ const App = () => {
       .then((res) => setProductos(res.data.documentos));
     setBuscador("");
   };
-
-  const changeUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setArchivoActualizar(e.target.files[0]);
-    }
-  };
-
   const handleUpdate = async () => {
     // if (archivoActualizar) {
     //   const data = new FormData();
@@ -78,16 +70,11 @@ const App = () => {
     //   })
 
     // }
-    if (archivoActualizar) {
-      const data = new FormData();
-      data.append("file", archivoActualizar!);
       await axios({
-        method: "post",
+        method: "get",
         url: "https://precioscopyart-api.vercel.app/api/upload",
-        data,
       }).then((response) => {
         const currentDate = new Date();
-
         // Formatear la fecha
         const formattedDate = currentDate.toISOString().slice(0, 10);
         
@@ -95,7 +82,6 @@ const App = () => {
         const fileName = `precios_${formattedDate}.txt`;
         exportToExcel(JSON.parse(response.data), fileName);
       });
-    }
   };
 
   return (
@@ -105,12 +91,6 @@ const App = () => {
           Actualizar Precios
         </label>
         <div className="flex items-center border-solid border-black">
-          <input
-            className="block w-full text-sm text-gray-900 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="file_input"
-            type="file"
-            onChange={changeUpdate}
-          />
           <button
             type="submit"
             className="font-bold mx-2"

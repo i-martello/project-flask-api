@@ -1,7 +1,16 @@
-from flask import Flask, jsonify, send_file
+import os
+import sys
+from flask import Flask, jsonify
 from markupsafe import escape
 import pandas as pd
 from flask_cors import CORS
+
+ruta_archivo_functions = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','functions.py'))
+sys.path.append(os.path.dirname(ruta_archivo_functions))
+
+ruta_archivo_mongo = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','mongo.py'))
+sys.path.append(os.path.dirname(ruta_archivo_mongo))
+
 from functions import upload_excel
 from mongo import collection
 import json
@@ -13,7 +22,7 @@ CORS(app)
 def hello_world(id):
   return f"<h1>Hello {escape(id)}</h1>"
 
-@app.route("/api/upload", methods=['POST'])
+@app.route("/api/upload")
 def upload():
   
   precios_excel, outpath_path, codigos = upload_excel()
@@ -43,7 +52,6 @@ def upload():
   
   #precios_excel.to_excel(outpath_path, index=False)
   
-    
   collection.delete_many({})
   
   collection.insert_many(data_dict)
