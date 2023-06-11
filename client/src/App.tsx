@@ -102,13 +102,6 @@ const App = () => {
             type="file"
             onChange={changeUpdate}
           />
-          <button
-            type="submit"
-            className="font-bold mx-2"
-            onClick={handleUpdate}
-          >
-            Actualizar
-          </button>
           <button onClick={() => exportToExcel(preciosExcel, 'precios_excel')}>        
           Download Excel
           </button> 
