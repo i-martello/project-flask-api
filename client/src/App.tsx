@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
-import { JsonToExcel } from "react-json-to-excel";
+import { exportToExcel } from "react-json-to-excel";
 
 interface productoType {
   _id: string;
@@ -109,12 +109,9 @@ const App = () => {
           >
             Actualizar
           </button>
-          <JsonToExcel
-          title="Download as Excel"
-          data={preciosExcel}
-          fileName="sample-file"
-          btnClassName="custom-classname"
-      />
+          <button onClick={() => exportToExcel(preciosExcel, 'precios_excel')}>        
+          Download Excel
+          </button> 
         </div>
       </div>
       <div>
