@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
+import { JsonToExcel } from "react-json-to-excel";
 
 interface productoType {
   _id: string;
@@ -20,6 +21,7 @@ interface dolarBlueType {
 
 const App = () => {
   const [productos, setProductos] = useState<productoType[]>([]);
+  const [preciosExcel, setPreciosExcel] = useState([]);
   const [buscador, setBuscador] = useState<string>("");
   const [dolarBlue, setDolarBlue] = useState<dolarBlueType>({
     value_avg: 0,
@@ -80,7 +82,7 @@ const App = () => {
       const data = new FormData();
       data.append("file", archivoActualizar!);
       await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
-      .then(response => console.log(JSON.parse(response.data)) )
+      .then(response => setPreciosExcel(JSON.parse(response.data)))
 
     }
     
@@ -107,6 +109,12 @@ const App = () => {
           >
             Actualizar
           </button>
+          <JsonToExcel
+          title="Download as Excel"
+          data={preciosExcel}
+          fileName="sample-file"
+          btnClassName="custom-classname"
+      />
         </div>
       </div>
       <div>
