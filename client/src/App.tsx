@@ -80,7 +80,7 @@ const App = () => {
       const data = new FormData();
       data.append("file", archivoActualizar!);
       await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
-      .then(response => JSON.parse(response.data) )
+      .then(response => console.log(JSON.parse(response.data)) )
 
     }
     
