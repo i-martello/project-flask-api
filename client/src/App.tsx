@@ -62,20 +62,28 @@ const App = () => {
   };
 
   const handleUpdate = async () => {
+    // if (archivoActualizar) {
+    //   const data = new FormData();
+    //   data.append("file", archivoActualizar!);
+    //   await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", responseType: "blob", data })
+    //   .then(response => {
+    //     const url = URL.createObjectURL(response.data);
+
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.download = 'precios.xlsx';
+    //     link.click();
+    //   })
+
+    // }
     if (archivoActualizar) {
       const data = new FormData();
       data.append("file", archivoActualizar!);
-      await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", responseType: "blob", data })
-      .then(response => {
-        const url = URL.createObjectURL(response.data);
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'precios.xlsx';
-        link.click();
-      })
+      await axios({method: "post", url: "https://precioscopyart-api.vercel.app/api/upload", data })
+      .then(response => JSON.parse(response.data) )
 
     }
+    
   };
 
 

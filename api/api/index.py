@@ -41,15 +41,15 @@ def upload():
   data_dict = precios_excel.to_dict("records")
   
   
-  precios_excel.to_excel(outpath_path, index=False)
+  #precios_excel.to_excel(outpath_path, index=False)
   
     
   collection.delete_many({})
   
   collection.insert_many(data_dict)
   
-  #return jsonify(precios_excel.to_json(orient="records"))
-  return send_file(outpath_path, as_attachment = True)
+  return jsonify(precios_excel.to_json(orient="records"))
+  #return send_file(outpath_path, as_attachment = True)
 
 @app.route("/api/getall", methods=['GET'])
 def getall():
