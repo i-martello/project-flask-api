@@ -91,7 +91,7 @@ const App = () => {
     <div>
       <div className="my-5 mx-auto w-[50%]">
         <div className="flex items-center border-solid border-black">
-          <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleUpdate}>
+          <button className="bg-green-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleUpdate}>
             <svg
               className="fill-current w-4 h-4 mr-2"
               xmlns="http://www.w3.org/2000/svg"
