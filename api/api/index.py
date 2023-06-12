@@ -16,7 +16,7 @@ from mongo import collection
 import json
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "https://precioscopyart-api.vercel.app/api/upload"}})
 
 @app.route("/auto/<string:id>")
 def hello_world(id):
