@@ -74,6 +74,8 @@ const App = () => {
         method: "get",
         url: "https://precioscopyart-api.vercel.app/api/upload",
       }).then((response) => {
+        console.log(response);
+        
         const currentDate = new Date();
         // Formatear la fecha
         const formattedDate = currentDate.toISOString().slice(0, 10);

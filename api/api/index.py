@@ -46,17 +46,15 @@ def upload():
   for x in precios_excel["fecha"]:
     print(type(x))
   
-  
   data_dict = precios_excel.to_dict("records")
-  
-  
-  #precios_excel.to_excel(outpath_path, index=False)
-  
+    
   collection.delete_many({})
   
   collection.insert_many(data_dict)
   
   precios_excel.drop("imagen", axis=1, inplace=True)
+  
+  #precios_excel.to_excel(outpath_path, index=False)
   
   return jsonify(precios_excel.to_json(orient="records"))
   #return send_file(outpath_path, as_attachment = True)
