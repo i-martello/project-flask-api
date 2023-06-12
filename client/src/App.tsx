@@ -89,7 +89,7 @@ const App = () => {
 
   return (
     <div>
-      <div className="my-5 mx-auto w-[50%]">
+      <div className="my-5 mx-auto">
         <div className="flex items-center border-solid border-black">
           <button className="bg-green-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleUpdate}>
             <svg
