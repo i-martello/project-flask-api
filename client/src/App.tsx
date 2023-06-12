@@ -70,21 +70,21 @@ const App = () => {
     //   })
 
     // }
-      await axios({
-        method: "post",
-        url: "https://precioscopyart-api.vercel.app/api/upload",
-        data: ''
-      }).then((response) => {
-        console.log(response);
-        
-        const currentDate = new Date();
-        // Formatear la fecha
-        const formattedDate = currentDate.toISOString().slice(0, 10);
-        
-        // Generar el nombre del archivo con la fecha actual
-        const fileName = `precios_${formattedDate}.txt`;
-        exportToExcel(JSON.parse(response.data), fileName);
-      });
+    await axios({
+      method: "post",
+      url: "https://precioscopyart-api.vercel.app/api/upload",
+      data: "",
+    }).then((response) => {
+      console.log(response);
+
+      const currentDate = new Date();
+      // Formatear la fecha
+      const formattedDate = currentDate.toISOString().slice(0, 10);
+
+      // Generar el nombre del archivo con la fecha actual
+      const fileName = `precios_${formattedDate}.txt`;
+      exportToExcel(JSON.parse(response.data), fileName);
+    });
   };
 
   return (
@@ -94,12 +94,15 @@ const App = () => {
           Actualizar Precios
         </label>
         <div className="flex items-center border-solid border-black">
-          <button
-            type="submit"
-            className="font-bold mx-2"
-            onClick={handleUpdate}
-          >
-            Actualizar
+          <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleUpdate}>
+            <svg
+              className="fill-current w-4 h-4 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+            </svg>
+            <span>Download</span>
           </button>
         </div>
       </div>

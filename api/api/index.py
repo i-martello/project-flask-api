@@ -25,6 +25,8 @@ def hello_world(id):
 @app.route("/api/upload", methods=["POST"])
 def upload():
   
+  print("hasta aca funciona, el error esta al llamar a papelera bariloche")
+  
   precios_excel, outpath_path, codigos = upload_excel()
   
   lineas_clean = [linea.replace('-','') for linea in codigos]
