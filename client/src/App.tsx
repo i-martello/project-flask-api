@@ -90,9 +90,6 @@ const App = () => {
   return (
     <div>
       <div className="my-5 mx-auto w-[50%]">
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Actualizar Precios
-        </label>
         <div className="flex items-center border-solid border-black">
           <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleUpdate}>
             <svg
