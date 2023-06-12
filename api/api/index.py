@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(ruta_archivo_functions))
 ruta_archivo_mongo = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','mongo.py'))
 sys.path.append(os.path.dirname(ruta_archivo_mongo))
 
-from functions import upload_excel
+from functions import clean_file
 from mongo import collection
 import json
 
@@ -24,42 +24,17 @@ def hello_world(id):
 
 @app.route("/api/upload", methods=["POST"])
 def upload():
-  
-  print("hasta aca funciona, el error esta al llamar a papelera bariloche")
-  
-  precios_excel, outpath_path, codigos = upload_excel()
-  
-  lineas_clean = [linea.replace('-','') for linea in codigos]
-  
-  prueba = [f"https://www.papelerabariloche.com.ar/img/p/{linea}/1.jpeg?quality=95&width=800&height=800&mode=max&upscale=false&format=webp" for linea in lineas_clean]
-  
-  precios_excel.insert(1,"Imagen",prueba)
-    
-  nuevas_columnas = ["codigo","imagen","articulo","costo","precio","fecha"]
-  
-  precios_excel.columns = nuevas_columnas
-
-  #Limpiar columna fecha
-  
-  precios_excel["fecha"] = precios_excel["fecha"].astype(str)
-
-  precios_excel["fecha"] = [fecha.replace("00:00:00","") for fecha in precios_excel["fecha"]]
-  
-  for x in precios_excel["fecha"]:
-    print(type(x))
-  
-  data_dict = precios_excel.to_dict("records")
-    
-  collection.delete_many({})
-  
-  collection.insert_many(data_dict)
-  
-  precios_excel.drop("imagen", axis=1, inplace=True)
-  
-  #precios_excel.to_excel(outpath_path, index=False)
-  
-  return jsonify(precios_excel.to_json(orient="records"))
+  cleaned_excel = clean_file()
+  return jsonify(cleaned_excel.to_json(orient="records"))
   #return send_file(outpath_path, as_attachment = True)
+  
+@app.route("/api/uploadlist", methods=["GET"])
+def list():
+  cleaned_excel = clean_file()
+  data_dict = cleaned_excel.to_dict("records")
+  collection.delete_many({})
+  collection.insert_many(data_dict)
+  return ''
 
 @app.route("/api/getall", methods=['GET'])
 def getall():

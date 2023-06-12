@@ -1,6 +1,7 @@
 import io
 import requests
 from flask import Flask, request, jsonify
+from mongo import collection
 from markupsafe import escape
 import pandas as pd
 from flask_cors import CORS
@@ -33,3 +34,35 @@ def upload_excel():
     json_excel = excel(lineas_txt)     
   
   return json_excel   
+
+
+def clean_file():
+  precios_excel, outpath_path, codigos = upload_excel()
+  
+  lineas_clean = [linea.replace('-','') for linea in codigos]
+  
+  prueba = [f"https://www.papelerabariloche.com.ar/img/p/{linea}/1.jpeg?quality=95&width=800&height=800&mode=max&upscale=false&format=webp" for linea in lineas_clean]
+  
+  precios_excel.insert(1,"Imagen",prueba)
+    
+  nuevas_columnas = ["codigo","imagen","articulo","costo","precio","fecha"]
+  
+  precios_excel.columns = nuevas_columnas
+
+  #Limpiar columna fecha
+  
+  precios_excel["fecha"] = precios_excel["fecha"].astype(str)
+
+  precios_excel["fecha"] = [fecha.replace("00:00:00","") for fecha in precios_excel["fecha"]]
+  
+  for x in precios_excel["fecha"]:
+    print(type(x))
+  
+  precios_excel.drop("imagen", axis=1, inplace=True)
+  
+  return precios_excel
+  
+  #precios_excel.to_excel(outpath_path, index=False)
+  
+  
+  #return send_file(outpath_path, as_attachment = True)
