@@ -22,7 +22,7 @@ cors = CORS(app)
 def hello_world(id):
   return f"<h1>Hello {escape(id)}</h1>"
 
-@app.route("/api/upload")
+@app.route("/api/upload", methods=["POST"])
 def upload():
   
   precios_excel, outpath_path, codigos = upload_excel()
