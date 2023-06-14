@@ -85,6 +85,9 @@ const App = () => {
       const fileName = `precios_${formattedDate}.txt`;
       exportToExcel(JSON.parse(response.data), fileName);
     });
+    await axios.get("https://precioscopyart-api.vercel.app/api/uploadlist")
+    .catch(err=> console.log(err)
+    )
   };
 
   return (
