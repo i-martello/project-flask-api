@@ -1,8 +1,9 @@
 import os
 import sys
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from markupsafe import escape
 import pandas as pd
+from unidecode import unidecode
 from flask_cors import CORS
 
 ruta_archivo_functions = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','functions.py'))
@@ -46,6 +47,18 @@ def getall():
   json_data = json.dumps(precios_excel_disc, default=str)
   
   return jsonify(json_data)
+
+@app.route("/api/search", methods=['GET'])
+def search():
+  buscador = request.args.get("search")
+  
+  precios_excel = collection.find({})
+  precios_excel_disc = [doc for doc in precios_excel]
+  df = pd.DataFrame(precios_excel_disc)
+  df["articulo"] = df["articulo"].apply(unidecode)
+  filtrados = df[df["articulo"].str.contains(buscador, case=False)]
+  print(filtrados)
+  return jsonify(filtrados.to_json(orient='records', default_handler=str))  
   
 if __name__ == "__main__":
   app.run(debug=True)

@@ -46,13 +46,13 @@ const App = () => {
     })();
   }, [dolarBlue]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .get("https://precioscopyart-api.vercel.app/api/v1/productos", {
+      .get("https://precioscopyart-api.vercel.app/api/search", {
         params: { search: buscador },
       })
-      .then((res) => setProductos(res.data.documentos));
+      .then((res) => setProductos(JSON.parse(res.data)));
     setBuscador("");
   };
   const handleUpdate = async () => {
@@ -104,7 +104,7 @@ const App = () => {
         </div>
       </div>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSearch}>
           <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
             Buscar producto
           </label>
