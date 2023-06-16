@@ -29,14 +29,6 @@ def upload():
   return jsonify(cleaned_excel.to_json(orient="records"))
   #return send_file(outpath_path, as_attachment = True)
   
-@app.route("/api/uploadlist", methods=["GET"])
-def list():
-  cleaned_excel = clean_file()
-  data_dict = cleaned_excel.to_dict("records")
-  collection.delete_many({})
-  collection.insert_many(data_dict)
-  return ''
-
 @app.route("/api/getall", methods=['GET'])
 def getall():
 

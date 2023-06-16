@@ -57,6 +57,10 @@ def clean_file():
   
   for x in precios_excel["fecha"]:
     print(type(x))
+    
+  data_dict = precios_excel.to_dict("records")
+  collection.delete_many({})
+  collection.insert_many(data_dict)
   
   precios_excel.drop("imagen", axis=1, inplace=True)
   
