@@ -11,7 +11,7 @@ interface productoType {
   c_iva: string;
   costo: string;
   venta: string;
-  descuento: string;
+  dto: string;
   fecha: string;
 }
 
@@ -206,7 +206,7 @@ const App = () => {
                     {producto.venta}
                   </td>
                   <td className="px-6 py-4 text-gray-900">
-                    {producto.descuento}
+                    {producto.dto}
                   </td>
 
                   <td className="px-6 py-4 w-[150px]  text-gray-900">{producto.fecha}</td>

@@ -45,12 +45,12 @@ def clean_file():
   precios_excel.insert(1,"imagen",prueba)
   precios_excel.rename(columns={"PRECIO CON IVA":"c_iva"}, inplace=True)
   precios_excel.rename(columns={"DESCRIPCIÓN":"articulo"}, inplace=True)
-  precios_excel.insert(4,"costo",[round(c_iva/ 1.21 * 1.105) for c_iva in precios_excel["c_iva"]  ])
-  precios_excel.insert(5,"venta",[round(c_iva* 1.5) for c_iva in precios_excel["c_iva"] ])
-  precios_excel.insert(6,"descuento",[round(costo* 1.5) for costo in precios_excel["costo"]])  
+  precios_excel.insert(4,"COSTO",[round(c_iva/ 1.21 * 1.105) for c_iva in precios_excel["c_iva"]  ])
+  precios_excel.insert(5,"VENTA",[round(c_iva* 1.5) for c_iva in precios_excel["c_iva"] ])
+  precios_excel.insert(6,"DTO",[round(costo* 1.5) for costo in precios_excel["COSTO"]])  
   precios_excel.rename(columns={"FECHA ULTIMA ACTUALIZACIÓN": "fecha"}, inplace=True)
   precios_excel["fecha"] = precios_excel["fecha"].astype(str)
-  precios_excel["fecha"] = [fecha.replace("00:00:00","") for fecha in precios_excel["fecha"]]
+  precios_excel["fecha"] = [fecha.replace("00:00:00","") for fecha in precios_excel["FECHA"]]
   
   #Limpiar columna fecha
 
@@ -59,6 +59,8 @@ def clean_file():
   collection.insert_many(data_dict)
   
   precios_excel.drop("imagen", axis=1, inplace=True)
+  
+  precios_excel.rename(columns={"c_iva":"C/IVA"}, inplace=True)
   
   return precios_excel
   
