@@ -5,14 +5,14 @@ import { exportToExcel } from "react-json-to-excel";
 
 interface productoType {
   _id: string;
-  codigo: string;
+  CODIGO: string;
   imagen: string;
-  articulo: string;
+  ARTICULO: string;
   c_iva: string;
-  costo: string;
-  venta: string;
-  dto: string;
-  fecha: string;
+  COSTO: string;
+  VENTA: string;
+  DTO: string;
+  FECHA: string;
 }
 
 interface dolarBlueType {
@@ -187,29 +187,29 @@ const App = () => {
                     <img
                       className="w-full h-full"
                       src={producto.imagen}
-                      alt={producto.articulo}
+                      alt={producto.ARTICULO}
                     />
                   </td>
                   <td
                     scope="row"
                     className="px-6 py-4 font-medium whitespace-nowrap dark:text-white"
                   >
-                    {producto.codigo}
+                    {producto.CODIGO}
                   </td>
                   <td className="px-6 py-4 text-gray-900">
-                    {producto.articulo}
+                    {producto.ARTICULO}
                   </td>
                   <td className="px-6 py-4 text-gray-900">{producto.c_iva}</td>
 
-                  <td className="px-6 py-4 text-gray-900">{producto.costo}</td>
+                  <td className="px-6 py-4 text-gray-900">{producto.COSTO}</td>
                   <td className="px-6 py-4 font-bold text-gray-900">
-                    {producto.venta}
+                    {producto.VENTA}
                   </td>
                   <td className="px-6 py-4 text-gray-900">
-                    {producto.dto}
+                    {producto.DTO}
                   </td>
 
-                  <td className="px-6 py-4 w-[150px]  text-gray-900">{producto.fecha}</td>
+                  <td className="px-6 py-4 w-[150px]  text-gray-900">{producto.FECHA}</td>
                 </tr>
               );
             })}
