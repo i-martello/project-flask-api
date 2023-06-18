@@ -153,28 +153,28 @@ const App = () => {
         <table className="w-full text-lg text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 Imagen
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 Id
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 Producto
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 C/IVA
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 COSTO
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 VENTA
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 DTO.
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-4 text-xl">
                 Fecha
               </th>
             </tr>
@@ -209,7 +209,7 @@ const App = () => {
                     {producto.descuento}
                   </td>
 
-                  <td className="px-6 py-4 w-[120%] text-gray-900">{producto.fecha}</td>
+                  <td className="px-6 py-4 w-[150px]  text-gray-900">{producto.fecha}</td>
                 </tr>
               );
             })}
