@@ -73,8 +73,9 @@ const App = () => {
 
     // }
     await axios({
-      method: "get",
-      url: "https://precioscopyart-api.vercel.app/api/upload"
+      method: "post",
+      url: "https://precioscopyart-api.vercel.app/api/upload",
+      data: "",
     }).then((response) => {
       console.log(response);
 
