@@ -21,8 +21,6 @@ def upload_excel():
     codigos_limpios = list(set(codigos))
     filas_filtradas = df_excel[df_excel["CÓDIGO"].isin(codigos_limpios)]
     codigos_excel = filas_filtradas["CÓDIGO"].to_list()
-    columnas = [round(x) for x in filas_filtradas["PRECIO CON IVA"].to_list()]
-    filas_filtradas.insert(3, "Precio", [round(x * 1.5) for x in columnas] )
     
     return filas_filtradas, outpath_path,codigos_excel 
     # json =  filas_filtradas.to_json(orient='records')
@@ -37,27 +35,24 @@ def upload_excel():
 
 
 def clean_file():
+  
   precios_excel, outpath_path, codigos = upload_excel()
-  
+
   lineas_clean = [linea.replace('-','') for linea in codigos]
-  
+    
   prueba = [f"https://www.papelerabariloche.com.ar/img/p/{linea}/1.jpeg?quality=95&width=800&height=800&mode=max&upscale=false&format=webp" for linea in lineas_clean]
   
-  precios_excel.insert(1,"Imagen",prueba)
-    
-  nuevas_columnas = ["codigo","imagen","articulo","costo","precio","fecha"]
-  
-  precios_excel.columns = nuevas_columnas
-
-  #Limpiar columna fecha
-  
+  precios_excel.insert(1,"imagen",prueba)
+  precios_excel.rename(columns={"PRECIO CON IVA":"C/IVA"}, inplace=True)
+  precios_excel.insert(4,"COSTO",[round(c_iva/ 1.21 * 1.105) for c_iva in precios_excel["C/IVA"]  ])
+  precios_excel.insert(5,"VENTA",[round(c_iva* 1.5) for c_iva in precios_excel["C/IVA"] ])
+  precios_excel.insert(6,"DTO.",[round(costo* 1.5) for costo in precios_excel["COSTO"]])  
+  precios_excel.rename(columns={"FECHA ULTIMA ACTUALIZACIÓN": "fecha"}, inplace=True)
   precios_excel["fecha"] = precios_excel["fecha"].astype(str)
-
   precios_excel["fecha"] = [fecha.replace("00:00:00","") for fecha in precios_excel["fecha"]]
   
-  for x in precios_excel["fecha"]:
-    print(type(x))
-    
+  #Limpiar columna fecha
+
   data_dict = precios_excel.to_dict("records")
   collection.delete_many({})
   collection.insert_many(data_dict)

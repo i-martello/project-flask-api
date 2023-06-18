@@ -23,9 +23,10 @@ cors = CORS(app)
 def hello_world(id):
   return f"<h1>Hello {escape(id)}</h1>"
 
-@app.route("/api/upload", methods=["POST"])
+@app.route("/api/upload", methods=["GET"])
 def upload():
   cleaned_excel = clean_file()
+  print(cleaned_excel)
   return jsonify(cleaned_excel.to_json(orient="records"))
   #return send_file(outpath_path, as_attachment = True)
   

@@ -6,11 +6,13 @@ import { exportToExcel } from "react-json-to-excel";
 interface productoType {
   _id: string;
   codigo: string;
-  articulo: string;
-  costo: string;
-  precio: string;
-  fecha: string;
   imagen: string;
+  articulo: string;
+  c_iva: string;
+  costo: string;
+  venta: string;
+  descuento: string;
+  fecha: string;
 }
 
 interface dolarBlueType {
@@ -91,7 +93,10 @@ const App = () => {
     <div>
       <div className="my-5 mx-auto items-center">
         <div className="flex items-center border-solid border-black">
-          <button className="bg-green-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleUpdate}>
+          <button
+            className="bg-green-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+            onClick={handleUpdate}
+          >
             <svg
               className="fill-current w-4 h-4 mr-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -158,10 +163,16 @@ const App = () => {
                 Producto
               </th>
               <th scope="col" className="px-6 py-3">
-                Costo
+                C/IVA
               </th>
               <th scope="col" className="px-6 py-3">
-                Precio
+                COSTO
+              </th>
+              <th scope="col" className="px-6 py-3">
+                VENTA
+              </th>
+              <th scope="col" className="px-6 py-3">
+                DTO.
               </th>
               <th scope="col" className="px-6 py-3">
                 Fecha
@@ -188,10 +199,16 @@ const App = () => {
                   <td className="px-6 py-4 text-gray-900">
                     {producto.articulo}
                   </td>
+                  <td className="px-6 py-4 text-gray-900">{producto.c_iva}</td>
+
                   <td className="px-6 py-4 text-gray-900">{producto.costo}</td>
                   <td className="px-6 py-4 font-bold text-gray-900">
-                    {producto.precio}
+                    {producto.venta}
                   </td>
+                  <td className="px-6 py-4 text-gray-900">
+                    {producto.descuento}
+                  </td>
+
                   <td className="px-6 py-4 text-gray-900">{producto.fecha}</td>
                 </tr>
               );
