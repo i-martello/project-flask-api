@@ -26,7 +26,6 @@ def hello_world(id):
 @app.route("/api/upload", methods=["GET"])
 def upload():
   cleaned_excel = clean_file()
-  print(cleaned_excel)
   return jsonify(cleaned_excel.to_json(orient="records"))
   #return send_file(outpath_path, as_attachment = True)
   
