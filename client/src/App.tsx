@@ -209,7 +209,7 @@ const App = () => {
                     {producto.descuento}
                   </td>
 
-                  <td className="px-6 py-4 text-gray-900">{producto.fecha}</td>
+                  <td className="px-6 py-4 w-[120%] text-gray-900">{producto.fecha}</td>
                 </tr>
               );
             })}
