@@ -86,7 +86,10 @@ const App = () => {
       // Generar el nombre del archivo con la fecha actual
       const fileName = `precios_${formattedDate}.txt`;
       exportToExcel(JSON.parse(response.data), fileName);
-    }).catch(()=>handleUpdate())
+    }).catch(()=>{
+      console.log("reintentando...");
+      
+      handleUpdate()})
   };
 
   return (
