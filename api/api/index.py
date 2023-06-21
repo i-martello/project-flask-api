@@ -47,8 +47,8 @@ def search():
   precios_excel = collection.find({})
   precios_excel_disc = [doc for doc in precios_excel]
   df = pd.DataFrame(precios_excel_disc)
-  df["articulo"] = df["articulo"].apply(unidecode)
-  filtrados = df[df["articulo"].str.contains(buscador, case=False)]
+  df["ARTICULO"] = df["ARTICULO"].apply(unidecode)
+  filtrados = df[df["ARTICULO"].str.contains(buscador, case=False)]
   print(filtrados)
   return jsonify(filtrados.to_json(orient='records', default_handler=str))  
   
