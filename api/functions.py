@@ -7,8 +7,6 @@ import pandas as pd
 from flask_cors import CORS
 import datetime
 
-
-
 def upload_excel():  
   def excel(codigos):
     url = "https://www.papelerabariloche.com.ar/lista-precios" 
