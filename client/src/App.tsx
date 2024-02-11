@@ -38,7 +38,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await axios
-        .get(`${process.env.URL_API}/api/getall`)
+        .get(`${process.env.REACT_APP_URL_API}/api/getall`)
         .then((res) => setProductos(JSON.parse(res.data)))
         .catch((err) => console.log(err));
     })();
@@ -56,7 +56,7 @@ const App = () => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .get(`${process.env.URL_API}/api/search`, {
+      .get(`${process.env.REACT_APP_URL_API}/api/search`, {
         params: { search: buscador },
       })
       .then((res) => setProductos(JSON.parse(res.data)));
@@ -80,7 +80,7 @@ const App = () => {
     // }
     await axios({
       method: "post",
-      url: `${process.env.URL_API}/api/upload`,
+      url: `${process.env.REACT_APP_URL_API}/api/upload`,
       data: "",
     })
       .then((response) => {
