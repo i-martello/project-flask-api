@@ -10,8 +10,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-PB_KEY = os.getenv("PB_KEY")
-PB_VALUE = os.getenv("PB_VALUE")
+PB_KEY = os.environ.get("PB_KEY")
+PB_VALUE = os.environ.get("PB_VALUE")
 
 def upload_excel():  
   def excel(codigos):
