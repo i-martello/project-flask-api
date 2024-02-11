@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { exportToExcel } from "react-json-to-excel";
+import dotenv from 'dotenv';
+
+dotenv.config(); // Cargar variables de entorno desde .env
+
 
 interface productoType {
   _id: string;
@@ -34,7 +38,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await axios
-        .get("https://precioscopyart-api.vercel.app/api/getall")
+        .get(`${process.env.URL_API}/api/getall`)
         .then((res) => setProductos(JSON.parse(res.data)))
         .catch((err) => console.log(err));
     })();
@@ -52,7 +56,7 @@ const App = () => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .get("https://precioscopyart-api.vercel.app/api/search", {
+      .get(`${process.env.URL_API}/api/search`, {
         params: { search: buscador },
       })
       .then((res) => setProductos(JSON.parse(res.data)));
@@ -76,7 +80,7 @@ const App = () => {
     // }
     await axios({
       method: "post",
-      url: "https://precioscopyart-api.vercel.app/api/upload",
+      url: `${process.env.URL_API}/api/upload`,
       data: "",
     })
       .then((response) => {
