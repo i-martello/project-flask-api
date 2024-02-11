@@ -6,11 +6,17 @@ from markupsafe import escape
 import pandas as pd
 from flask_cors import CORS
 import datetime
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+PB_KEY = os.getenv("PB_KEY")
+PB_VALUE = os.getenv("PB_VALUE")
 
 def upload_excel():  
   def excel(codigos):
     url = "https://www.papelerabariloche.com.ar/lista-precios" 
-    cookies = {"SofMic.Shops.PapeleraBariloche.Web.Auth": "84AC03283EF4FB7956237F4100CC3D1A0B670CB8CEAA729D0A110BABB3256EE8FD951E13FFBA1D917918B0FDF0E58B070E17C8F580C58F2A85754E31BB9B9C149A592521EBBA6FAA9E35518588F5B0B199C7C50116E74B55F1CC7C71C89AE449E8DD8031D392E4637CC7B27B2D6177F8741B209425F9C818DADA26C5F440913B"}
+    cookies = {PB_KEY: PB_VALUE}
     response = requests.get(url, cookies=cookies) 
     contenido_excel = response.content 
     df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  

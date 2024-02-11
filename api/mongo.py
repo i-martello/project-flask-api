@@ -1,6 +1,10 @@
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-client = MongoClient("mongodb+srv://First:nacho@personalcluster.hg1pfct.mongodb.net/Precios-CopyArt?retryWrites=true&w=majority")
+MONGO_KEY = os.getenv("MONGO_KEY")
+client = MongoClient(MONGO_KEY)
 
 db = client["Precios-CopyArt"]
 collection = db["Precios"]
