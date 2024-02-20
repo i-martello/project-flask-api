@@ -17,7 +17,11 @@ def upload_excel():
   def excel(codigos):
     url = "https://www.papelerabariloche.com.ar/lista-precios" 
     cookies = {PB_KEY: PB_VALUE}
-    response = requests.get(url, cookies=cookies) 
+    try:
+      response = requests.get(url, cookies=cookies)
+      print("acceso a pb exitoso")
+    except:
+      print("no se pudo acceder a pb") 
     contenido_excel = response.content 
     df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
     df_excel = df_excel.drop(df_excel.columns[[0,5,6,7,8]], axis=1)
