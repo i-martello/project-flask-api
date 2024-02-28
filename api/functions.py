@@ -22,8 +22,8 @@ def upload_excel():
       print("acceso a pb exitoso")
     except:
       print("no se pudo acceder a pb") 
+    print("EXCEL:",response)
     contenido_excel = response.content 
-    print("EXCEL:",contenido_excel)
     
     df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
     df_excel = df_excel.drop(df_excel.columns[[0,5,6,7,8]], axis=1)
