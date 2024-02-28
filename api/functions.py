@@ -25,7 +25,7 @@ def upload_excel():
     contenido_excel = response.content 
     df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
     df_excel = df_excel.drop(df_excel.columns[[0,5,6,7,8]], axis=1)
-    print(df_excel)
+    print("EXCEL:"df_excel)
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d")
     outpath_path = f"precios_{fecha_actual}.xlsx"
     df_excel["PRECIO CON IVA"] =  [round(x) for x in df_excel["PRECIO CON IVA"].to_list()]
