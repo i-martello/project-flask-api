@@ -120,12 +120,21 @@ const App = () => {
   formData.append('file', selectedFile);
   
   try {
-    const response = await axios.post('http://your-api-endpoint', formData, {
+    await axios.post('http://127.0.0.1:5000/api/manual_upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    });
-    console.log('File uploaded successfully:', response.data);
+    }).then((response)=>{
+      console.log(response);
+
+      const currentDate = new Date();
+      // Formatear la fecha
+      const formattedDate = currentDate.toISOString().slice(0, 10);
+
+      // Generar el nombre del archivo con la fecha actual
+      const fileName = `precios_${formattedDate}.txt`;
+      exportToExcel(JSON.parse(response.data), fileName);
+    })
     // Aquí puedes manejar la respuesta del servidor
   } catch (error) {
     console.error('Error uploading file:', error);

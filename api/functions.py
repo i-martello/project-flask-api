@@ -13,19 +13,22 @@ load_dotenv()
 PB_KEY = os.environ.get("PB_KEY")
 PB_VALUE = os.environ.get("PB_VALUE")
 
-def upload_excel():  
+def upload_excel(manual_excel):  
   def excel(codigos):
-    url = "https://www.papelerabariloche.com.ar/lista-precios" 
-    cookies = {PB_KEY: PB_VALUE}
-    try:
-      response = requests.get(url, cookies=cookies)
-      print("acceso a pb exitoso")
-    except:
-      print("no se pudo acceder a pb") 
-    contenido_excel = response.content 
-    print("EXCEL:",contenido_excel)
-    
-    df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
+    if not manual_excel:
+      url = "https://www.papelerabariloche.com.ar/lista-precios" 
+      cookies = {PB_KEY: PB_VALUE}
+      try:
+        response = requests.get(url, cookies=cookies)
+        print("acceso a pb exitoso")
+      except:
+        print("no se pudo acceder a pb") 
+      contenido_excel = response.content 
+      print("EXCEL:",contenido_excel)
+      df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
+    else:
+      df_excel = pd.read_excel(manual_excel, skiprows=9)
+
     df_excel = df_excel.drop(df_excel.columns[[0,5,6,7,8]], axis=1)
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d")
     outpath_path = f"precios_{fecha_actual}.xlsx"
@@ -33,7 +36,7 @@ def upload_excel():
     codigos_limpios = list(set(codigos))
     filas_filtradas = df_excel[df_excel["CÓDIGO"].isin(codigos_limpios)]
     codigos_excel = filas_filtradas["CÓDIGO"].to_list()
-    
+    print(codigos_excel)
     return filas_filtradas, outpath_path,codigos_excel 
     # json =  filas_filtradas.to_json(orient='records')
     # filas_filtradas.to_excel(outpath_path, index=False)
@@ -46,9 +49,9 @@ def upload_excel():
   return json_excel   
 
 
-def clean_file():
+def clean_file(manual_file = False):
   
-  precios_excel, outpath_path, codigos = upload_excel()
+  precios_excel, outpath_path, codigos = upload_excel(manual_file)
 
   lineas_clean = [linea.replace('-','') for linea in codigos]
     
