@@ -3,7 +3,6 @@ import "./App.css";
 import axios from "axios";
 import { exportToExcel } from "react-json-to-excel";
 
-
 interface productoType {
   _id: string;
   CODIGO: string;
@@ -26,6 +25,9 @@ const App = () => {
   const [productos, setProductos] = useState<productoType[]>([]);
   const [buscador, setBuscador] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [background, setBackground] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [manualForm, setManualForm] = useState(false);
   const [dolarBlue, setDolarBlue] = useState<dolarBlueType>({
     value_avg: 0,
     value_buy: 0,
@@ -59,8 +61,10 @@ const App = () => {
       .then((res) => setProductos(JSON.parse(res.data)));
     setBuscador("");
   };
+
   const handleUpdate = async () => {
-    setLoading(true)
+    setBackground(true);
+    setLoading(true);
     // if (archivoActualizar) {
     //   const data = new FormData();
     //   data.append("file", archivoActualizar!);
@@ -90,7 +94,8 @@ const App = () => {
         // Generar el nombre del archivo con la fecha actual
         const fileName = `precios_${formattedDate}.txt`;
         exportToExcel(JSON.parse(response.data), fileName);
-        setLoading(false)
+        setLoading(false);
+        setBackground(false)
       })
       .catch(() => {
         console.log("reintentando...");
@@ -99,34 +104,137 @@ const App = () => {
       });
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);
+    }
+  }
+  const handleManualUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!selectedFile) {
+      alert('Por favor suba un archivo.');
+      return;
+  }
+  const formData = new FormData();
+  formData.append('file', selectedFile);
+  
+  try {
+    const response = await axios.post('http://your-api-endpoint', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log('File uploaded successfully:', response.data);
+    // Aquí puedes manejar la respuesta del servidor
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    // Aquí puedes manejar el error en caso de que ocurra
+  }
+  }
   return (
     <div>
       <div
-        className={`fixed top-0 z-50 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50 ${
-          loading ? "visible" : "invisible"
-        }`}
+        className={`${
+          background ? "visible" : "invisible"
+        } fixed top-0 z-50 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50`}
       >
-        <div className="mb-4 text-white text-lg">
-          Descargando lista de precios...
+        <div className={`${loading ? "visible" : "invisible"} absolute top-[45%] left-[45%]`}>
+          <div className="mb-4 text-white text-lg">
+            Descargando lista de precios...
+          </div>
+          <div className="m-auto w-24 h-24 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         </div>
-        <div className="w-24 h-24 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+        <div
+          className={`${
+            manualForm ? "visible" : "invisible"
+          } flex justify-center items-center w-screen h-screen`}
+        >
+          <div className="relative space-y-6 w-[35%] h-[25%] py-4 mb-36 rounded-md bg-gray-500">
+            <button
+              type="button"
+              className="absolute top-2 right-2 bg-white hover:bg-red-600 rounded-md p-2 inline-flex items-center justify-center text-gray-800 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              onClick={()=> {setManualForm(false), setBackground(false)}}
+            >
+              <span className="sr-only">Close menu</span>
+              <svg
+                className="h-4 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <label className="font-medium text-2xl text-gray-900">
+              Ingrese la lista de precios de Papelera Bariloche
+            </label>
+            <form className="space-y-6" onSubmit={handleManualUpdate}>
+              <input
+                className="block w-[50%] m-auto text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                id="file_input"
+                type="file"
+                onChange={handleFileChange}
+              />
+                <button
+                  type="submit"
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                >
+                  <svg
+                    className="fill-current w-4 h-4 mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                  </svg>
+                  <span>Download</span>
+                </button>
+            </form>
+          </div>
+        </div>
       </div>
       <div>
         <div className="my-5 mx-auto items-center">
-          <div className="flex items-center border-solid border-black">
-            <button
-              className="bg-green-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-              onClick={handleUpdate}
-            >
-              <svg
-                className="fill-current w-4 h-4 mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
+          <div className="flex justify-between w-[60%]">
+            <div className="flex items-center border-solid border-black">
+              <button
+                className="bg-green-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                onClick={handleUpdate}
               >
-                <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-              </svg>
-              <span>Descargar nueva lista</span>
-            </button>
+                <svg
+                  className="fill-current w-4 h-4 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                </svg>
+                <span>Descargar nueva lista</span>
+              </button>
+            </div>
+            <div className="flex items-center border-solid border-black">
+              <button
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                onClick={() => {
+                  setManualForm(true), setBackground(true);
+                }}
+              >
+                <svg
+                  className="fill-current w-4 h-4 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                </svg>
+                <span>Obtener lista manualmente</span>
+              </button>
+            </div>
           </div>
         </div>
         <div>
