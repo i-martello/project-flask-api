@@ -38,6 +38,9 @@ def manual_upload():
   cleaned_excel = clean_file(file)
   if file.filename == '':
       return jsonify({'error': 'No selected file'}), 400
+  if cleaned_excel == "error":
+      return jsonify({cleaned_excel:"archivo erroneo"})
+
 
   # Aquí puedes guardar el archivo en el sistema de archivos
   # Por ejemplo:
