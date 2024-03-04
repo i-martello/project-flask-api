@@ -120,7 +120,7 @@ const App = () => {
   formData.append('file', selectedFile);
   
   try {
-    await axios.post('http://127.0.0.1:5000/api/manual_upload', formData, {
+    await axios.post('https://precioscopyart-api.vercel.app/api/manual_upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
