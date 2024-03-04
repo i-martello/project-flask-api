@@ -51,10 +51,7 @@ def upload_excel(manual_excel):
 
 def clean_file(manual_file = False):
   
-  try:
-    precios_excel, outpath_path, codigos = upload_excel(manual_file)
-  except:
-    return "error"
+  precios_excel, outpath_path, codigos = upload_excel(manual_file)
   lineas_clean = [linea.replace('-','') for linea in codigos]
     
   prueba = [f"https://www.papelerabariloche.com.ar/img/p/{linea}/1.jpeg?quality=95&width=800&height=800&mode=max&upscale=false&format=webp" for linea in lineas_clean]
