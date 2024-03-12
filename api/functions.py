@@ -22,7 +22,7 @@ def upload_excel(manual_excel):
         response = requests.get(url, cookies=cookies)
         print("acceso a pb exitoso")
       except:
-        print("no se pudo acceder a pb") 
+        return jsonify({'error': 'No se pudo acceder a pb'}), 400
       contenido_excel = response.content 
       print("EXCEL:",contenido_excel)
       df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
