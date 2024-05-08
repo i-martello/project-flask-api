@@ -64,9 +64,6 @@ def clean_file(manual_file = False):
   precios_excel.insert(4,"COSTO",[round(c_iva/ 1.21 * 1.105) for c_iva in precios_excel["c_iva"]  ])
   precios_excel.insert(5,"VENTA",[round(c_iva* 1.5) for c_iva in precios_excel["c_iva"] ])
   precios_excel.insert(6,"DTO",[round(costo* 1.5) for costo in precios_excel["COSTO"]])  
-  precios_excel.rename(columns={"FECHA ULTIMA ACTUALIZACIÓN": "FECHA"}, inplace=True)
-  precios_excel["FECHA"] = precios_excel["FECHA"].astype(str)
-  precios_excel["FECHA"] = [fecha.replace("00:00:00","") for fecha in precios_excel["FECHA"]]
   
   #Limpiar columna fecha
 
@@ -76,7 +73,8 @@ def clean_file(manual_file = False):
   
   precios_excel.drop("imagen", axis=1, inplace=True)
   
-  precios_excel.rename(columns={"c_iva":"C/IVA"}, inplace=True)
+  precios_excel.rename(columns={"c_iva":"COSTO 21%"}, inplace=True)
+  precios_excel.rename(columns={"COSTO":"COSTO 10.5%"}, inplace=True)
   
   return precios_excel
   
