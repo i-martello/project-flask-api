@@ -72,6 +72,8 @@ def clean_file(manual_file = False):
   collection.insert_many(data_dict)
   
   precios_excel.drop("imagen", axis=1, inplace=True)
+  precios_excel.drop("FECHA", axis=1, inplace=True)
+
   
   precios_excel.rename(columns={"c_iva":"COSTO 21%"}, inplace=True)
   precios_excel.rename(columns={"COSTO":"COSTO 10.5%"}, inplace=True)
