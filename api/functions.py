@@ -10,14 +10,49 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-PB_KEY = os.environ.get("PB_KEY")
-PB_VALUE = os.environ.get("PB_VALUE")
+PB_NAME = os.environ.get("NAME")
+PB_PASSWD = os.environ.get("PASSWD")
+PB_COOKIE = os.environ.get("COOKIE")
 
 def upload_excel(manual_excel):  
   def excel(codigos):
     if not manual_excel:
+      
+      url = "https://www.papelerabariloche.com.ar/ingreso"
+
+      headers = {
+          "Host": "www.papelerabariloche.com.ar",
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0",
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.5",
+          "Accept-Encoding": "gzip, deflate, br",
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Origin": "https://www.papelerabariloche.com.ar",
+          "Referer": "https://www.papelerabariloche.com.ar/ingreso",
+          "Upgrade-Insecure-Requests": "1",
+          "Sec-Fetch-Dest": "document",
+          "Sec-Fetch-Mode": "navigate",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Fetch-User": "?1",
+          "Te": "trailers"
+      }
+
+      data = {
+          "frmLoginSubmitted": "1",
+          "txtUsername": PB_NAME,
+          "txtPassword": PB_PASSWD
+      }
+
+      response = httpx.post(url, headers=headers, data=data)
+
+      # Imprimir el contenido de la respuesta y las cookies
+      cookies = response.cookies
+
+      # Imprimir el contenido de la respuesta y las cookies
+      cookie_value = cookies.get(PB_COOKIE)
+  
       url = "https://www.papelerabariloche.com.ar/lista-precios" 
-      cookies = {PB_KEY: PB_VALUE}
+      cookies = {PB_COOKIE: cookie_value}
       try:
         response = requests.get(url, cookies=cookies)
         print("acceso a pb exitoso")
