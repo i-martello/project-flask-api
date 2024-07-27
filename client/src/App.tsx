@@ -37,7 +37,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await axios
-        .get(`https://precioscopyart-api.vercel.app/api/getall`)
+        .get(`http://localhost:5000/api/getall`)
         .then((res) => setProductos(JSON.parse(res.data)))
         .catch((err) => console.log(err));
     })();
@@ -46,7 +46,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await axios
-        .get("https://api.bluelytics.com.ar/v2/latest")
+        .get("http://api.bluelytics.com.ar/v2/latest")
         .then((res) => setDolarBlue(res.data.blue))
         .catch((err) => console.log(err));
     })();
@@ -55,7 +55,7 @@ const App = () => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .get(`https://precioscopyart-api.vercel.app/api/search`, {
+      .get(`http://localhost:5000/api/search`, {
         params: { search: buscador },
       })
       .then((res) => setProductos(JSON.parse(res.data)));
@@ -81,7 +81,7 @@ const App = () => {
     // }
     await axios({
       method: "get",
-      url: `https://precioscopyart-api.vercel.app/api/upload`,
+      url: `http://localhost:5000/api/upload`,
     })
       .then((response) => {
         console.log(response);
@@ -119,7 +119,7 @@ const App = () => {
   formData.append('file', selectedFile);
   
   try {
-    await axios.post('https://precioscopyart-api.vercel.app/api/manual_upload', formData, {
+    await axios.post('http://localhost:5000/api/manual_upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
