@@ -1,12 +1,12 @@
 import io
-import requests
-from flask import Flask, request, jsonify
-from mongo import collection
-from markupsafe import escape
-import pandas as pd
-from flask_cors import CORS
 import datetime
 import os
+import requests
+from flask import jsonify
+import urllib.parse
+import httpx
+from mongo import collection
+import pandas as pd
 from dotenv import load_dotenv
 load_dotenv()
 
