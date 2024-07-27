@@ -44,7 +44,7 @@ def manual_upload():
   
 @app.route("/api/getall", methods=['GET'])
 def getall():
-
+  
   precios_excel = collection.find({})
   
   precios_excel_disc = [doc for doc in precios_excel]
