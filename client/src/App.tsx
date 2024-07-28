@@ -2,6 +2,22 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { exportToExcel } from "react-json-to-excel";
+import { FaExclamationTriangle } from "react-icons/fa"; // Importa el ícono de alerta
+
+const styles = {
+  container: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "red",
+    color: "white",
+    padding: "10px",
+    borderRadius: "5px",
+    margin: "10px"
+  },
+  icon: {
+    marginRight: "10px",
+  },
+};
 
 interface productoType {
   _id: string;
@@ -94,7 +110,7 @@ const App = () => {
         const fileName = `precios_${formattedDate}.txt`;
         exportToExcel(JSON.parse(response.data), fileName);
         setLoading(false);
-        setBackground(false)
+        setBackground(false);
       })
       .catch(() => {
         console.log("reintentando...");
@@ -107,39 +123,41 @@ const App = () => {
     if (event.target.files) {
       setSelectedFile(event.target.files[0]);
     }
-  }
+  };
   const handleManualUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!selectedFile) {
-      alert('Por favor suba un archivo.');
+      alert("Por favor suba un archivo.");
       return;
-  }
-  const formData = new FormData();
-  formData.append('file', selectedFile);
-  
-  try {
-    await axios.post('http://localhost:5000/api/manual_upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then((response)=>{
-      console.log(response);
+    }
+    const formData = new FormData();
+    formData.append("file", selectedFile);
 
-      const currentDate = new Date();
-      // Formatear la fecha
-      const formattedDate = currentDate.toISOString().slice(0, 10);
+    try {
+      await axios
+        .post("http://localhost:5000/api/manual_upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response);
 
-      // Generar el nombre del archivo con la fecha actual
-      const fileName = `precios_${formattedDate}.txt`;
-      exportToExcel(JSON.parse(response.data), fileName);
-    })
-    // Aquí puedes manejar la respuesta del servidor
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    // Aquí puedes manejar el error en caso de que ocurra
-  }
-  }
+          const currentDate = new Date();
+          // Formatear la fecha
+          const formattedDate = currentDate.toISOString().slice(0, 10);
+
+          // Generar el nombre del archivo con la fecha actual
+          const fileName = `precios_${formattedDate}.txt`;
+          exportToExcel(JSON.parse(response.data), fileName);
+        });
+      // Aquí puedes manejar la respuesta del servidor
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      // Aquí puedes manejar el error en caso de que ocurra
+    }
+  };
   return (
     <div>
       <div
@@ -147,9 +165,19 @@ const App = () => {
           background ? "visible" : "invisible"
         } fixed top-0 z-50 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50`}
       >
-        <div className={`${loading ? "visible" : "invisible"} absolute top-[45%] left-[45%]`}>
+        <div
+          className={`${
+            loading ? "visible" : "invisible"
+          } absolute top-[40%] left-[35%]`}
+        >
           <div className="mb-4 text-white text-lg">
             Descargando lista de precios...
+          </div>
+          <div style={styles.container}>
+            <FaExclamationTriangle style={styles.icon} />
+            <span>
+              SI TARDA MAS DE 5 MINUTOS, REINICIA LA PAGINA Y REPITE EL PROCESO
+            </span>
           </div>
           <div className="m-auto w-24 h-24 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         </div>
@@ -162,7 +190,9 @@ const App = () => {
             <button
               type="button"
               className="absolute top-2 right-2 bg-white hover:bg-red-600 rounded-md p-2 inline-flex items-center justify-center text-gray-800 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-              onClick={()=> {setManualForm(false), setBackground(false)}}
+              onClick={() => {
+                setManualForm(false), setBackground(false);
+              }}
             >
               <span className="sr-only">Close menu</span>
               <svg
@@ -191,19 +221,19 @@ const App = () => {
                 type="file"
                 onChange={handleFileChange}
               />
-                <button
-                  type="submit"
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+              <button
+                type="submit"
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+              >
+                <svg
+                  className="fill-current w-4 h-4 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
                 >
-                  <svg
-                    className="fill-current w-4 h-4 mr-2"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                  </svg>
-                  <span>Download</span>
-                </button>
+                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                </svg>
+                <span>Download</span>
+              </button>
             </form>
           </div>
         </div>
