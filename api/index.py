@@ -29,20 +29,16 @@ def manual_upload():
 
   file = request.files['file']
   cleaned_excel = clean_file(file)
+  
   if file.filename == '':
       return jsonify({'error': 'No selected file'}), 400
-
-
-  # Aquí puedes guardar el archivo en el sistema de archivos
-  # Por ejemplo:
-  # file.save('uploads/' + secure_filename(file.filename))
 
   return jsonify(cleaned_excel.to_json(orient="records"))
   
   
 @app.route("/api/getall", methods=['GET'])
 def getall():
-
+  
   precios_excel = collection.find({})
   
   precios_excel_disc = [doc for doc in precios_excel]
@@ -60,7 +56,6 @@ def search():
   df = pd.DataFrame(precios_excel_disc)
   df["ARTICULO"] = df["ARTICULO"].apply(unidecode)
   filtrados = df[df["ARTICULO"].str.contains(buscador, case=False)]
-  print(filtrados)
   return jsonify(filtrados.to_json(orient='records', default_handler=str))  
   
 if __name__ == "__main__":

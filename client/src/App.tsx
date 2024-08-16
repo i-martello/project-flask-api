@@ -84,7 +84,7 @@ const App = () => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .get(`https://precioscopyart-api.vercel.app/api/search`, {
+      .get(`http://localhost:5000/api/search`, {
         params: { search: buscador },
       })
       .then((res) => setProductos(JSON.parse(res.data)));
@@ -110,7 +110,7 @@ const App = () => {
     // }
     await axios({
       method: "get",
-      url: `https://precioscopyart-api.vercel.app/api/upload`,
+      url: `http://localhost:5000/api/upload`,
     })
       .then((response) => {
         console.log(response);
