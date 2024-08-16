@@ -50,11 +50,25 @@ const App = () => {
     value_sell: 0,
   });
 
+
+  function sanitizeJson(jsonString: string) {
+    return jsonString
+        .replace(/NaN/g, 'null') // Reemplaza NaN con null
+        .replace(/Infinity/g, 'null') // Reemplaza Infinity con null
+        .replace(/-Infinity/g, 'null'); // Reemplaza -Infinity con null
+}
+
+// Ejemplo de uso
+
   useEffect(() => {
     (async () => {
       await axios
         .get(`http://localhost:5000/api/getall`)
-        .then((res) => setProductos(JSON.parse(res.data)))
+        .then((res) => {
+          const sanitizedData = sanitizeJson(res.data)
+          setProductos(JSON.parse(sanitizedData))
+        }
+        )
         .catch((err) => console.log(err));
     })();
   }, []);

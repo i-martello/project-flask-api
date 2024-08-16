@@ -10,60 +10,11 @@ import pandas as pd
 from dotenv import load_dotenv
 load_dotenv()
 
-PB_NAME = os.environ.get("NAME")
-PB_PASSWD = os.environ.get("PASSWD")
-PB_COOKIE = os.environ.get("COOKIE")
 
-
-def upload_excel(manual_excel):  
+def upload_excel(manual_excel): 
+  
   def excel(codigos):
-    if not manual_excel:
-
-      url = "https://www.papelerabariloche.com.ar/ingreso"
-
-      headers = {
-          "Host": "www.papelerabariloche.com.ar",
-          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0",
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.5",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Origin": "https://www.papelerabariloche.com.ar",
-          "Referer": "https://www.papelerabariloche.com.ar/ingreso",
-          "Upgrade-Insecure-Requests": "1",
-          "Sec-Fetch-Dest": "document",
-          "Sec-Fetch-Mode": "navigate",
-          "Sec-Fetch-Site": "same-origin",
-          "Sec-Fetch-User": "?1",
-          "Te": "trailers"
-      }
-
-      data = {
-          "frmLoginSubmitted": "1",
-          "txtUsername": PB_NAME,
-          "txtPassword": PB_PASSWD
-      }
-
-      response = httpx.post(url, headers=headers, data=data)
-
-      # Imprimir el contenido de la respuesta y las cookies
-      cookies = response.cookies
-
-      # Imprimir el contenido de la respuesta y las cookies
-      cookie_value = cookies.get(PB_COOKIE)
-
-      url = "https://www.papelerabariloche.com.ar/lista-precios" 
-      cookies = {PB_COOKIE: cookie_value}
-      try:
-        response = requests.get(url, cookies=cookies)
-        print("acceso a pb exitoso")
-      except:
-        return jsonify({'error': 'No se pudo acceder a pb'}), 400
-      contenido_excel = response.content 
-      df_excel = pd.read_excel(io.BytesIO(contenido_excel), skiprows=9)  
-    else:
-      df_excel = pd.read_excel(manual_excel, skiprows=9)
-
+    df_excel = pd.read_excel(manual_excel, skiprows=9)
     df_excel = df_excel.drop(df_excel.columns[[0,5,6,7,8]], axis=1)
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d")
     outpath_path = f"precios_{fecha_actual}.xlsx"
@@ -86,10 +37,7 @@ def upload_excel(manual_excel):
 
 def clean_file(manual_file = False):
   
-  try:
-    precios_excel, outpath_path, codigos = upload_excel(manual_file)
-  except:
-    return "error"
+  precios_excel, outpath_path, codigos = upload_excel(manual_file)
   lineas_clean = [linea.replace('-','') for linea in codigos]
     
   prueba = [f"https://www.papelerabariloche.com.ar/img/p/{linea}/1.jpeg?quality=95&width=800&height=800&mode=max&upscale=false&format=webp" for linea in lineas_clean]
@@ -100,17 +48,19 @@ def clean_file(manual_file = False):
   precios_excel.insert(4,"COSTO",[round(c_iva/ 1.21 * 1.105) for c_iva in precios_excel["c_iva"]  ])
   precios_excel.insert(5,"VENTA",[round(c_iva* 1.5) for c_iva in precios_excel["c_iva"] ])
   precios_excel.insert(6,"DTO",[round(costo* 1.5) for costo in precios_excel["COSTO"]])  
-  precios_excel.rename(columns={"FECHA ULTIMA ACTUALIZACIÓN": "FECHA"}, inplace=True)
+  precios_excel.rename(columns={"PRECIO OFERTA": "OFERTA"}, inplace=True)
   
-  #Limpiar columna fecha
-
   data_dict = precios_excel.to_dict("records")
   collection.delete_many({})
   collection.insert_many(data_dict)
   
-  precios_excel.drop("imagen", axis=1, inplace=True)
-  precios_excel.drop("FECHA", axis=1, inplace=True)
+# ESTA ES LA COLUMNA QUE DICE "DESCUENTO POR CANTIDAD"  
+  col_to_drop = precios_excel.columns[8]
 
+# Eliminar la columna por su nombre
+  precios_excel = precios_excel.drop(columns=[col_to_drop])
+  precios_excel.drop("imagen", axis=1, inplace=True)
+  precios_excel.drop("OFERTA", axis=1, inplace=True)
   
   precios_excel.rename(columns={"c_iva":"COSTO 21%"}, inplace=True)
   precios_excel.rename(columns={"COSTO":"COSTO 10.5%"}, inplace=True)

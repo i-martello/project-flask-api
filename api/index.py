@@ -5,13 +5,6 @@ from markupsafe import escape
 import pandas as pd
 from unidecode import unidecode
 from flask_cors import CORS
-
-ruta_archivo_functions = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','functions.py'))
-sys.path.append(os.path.dirname(ruta_archivo_functions))
-
-ruta_archivo_mongo = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','mongo.py'))
-sys.path.append(os.path.dirname(ruta_archivo_mongo))
-
 from functions import clean_file
 from mongo import collection
 import json
@@ -36,6 +29,7 @@ def manual_upload():
 
   file = request.files['file']
   cleaned_excel = clean_file(file)
+  
   if file.filename == '':
       return jsonify({'error': 'No selected file'}), 400
 
@@ -62,7 +56,6 @@ def search():
   df = pd.DataFrame(precios_excel_disc)
   df["ARTICULO"] = df["ARTICULO"].apply(unidecode)
   filtrados = df[df["ARTICULO"].str.contains(buscador, case=False)]
-  print(filtrados)
   return jsonify(filtrados.to_json(orient='records', default_handler=str))  
   
 if __name__ == "__main__":
