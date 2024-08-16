@@ -5,13 +5,6 @@ from markupsafe import escape
 import pandas as pd
 from unidecode import unidecode
 from flask_cors import CORS
-
-ruta_archivo_functions = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','functions.py'))
-sys.path.append(os.path.dirname(ruta_archivo_functions))
-
-ruta_archivo_mongo = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','mongo.py'))
-sys.path.append(os.path.dirname(ruta_archivo_mongo))
-
 from functions import clean_file
 from mongo import collection
 import json
