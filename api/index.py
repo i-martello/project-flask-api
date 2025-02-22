@@ -41,6 +41,8 @@ def getall():
   
   precios_excel = collection.find({})
   
+  print("precios excel")
+  
   precios_excel_disc = [doc for doc in precios_excel]
   
   json_data = json.dumps(precios_excel_disc, default=str)

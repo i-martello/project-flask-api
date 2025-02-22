@@ -62,7 +62,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await axios
-        .get(`https://precioscopyart-api.vercel.app/api/getall`)
+        .get(`http://localhost:5000/api/getall`)
         .then((res) => {
           const sanitizedData = sanitizeJson(res.data)
           setProductos(JSON.parse(sanitizedData))
@@ -149,7 +149,7 @@ const App = () => {
 
     try {
       await axios
-        .post("https://precioscopyart-api.vercel.app/api/manual_upload", formData, {
+        .post("http://localhost:5000/api/manual_upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
