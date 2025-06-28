@@ -23,7 +23,7 @@ def cargar_y_filtrar_excel(manual_excel, codigos) -> tuple[pd.DataFrame, str, li
 
     df_filtrado = df[df["CÓDIGO"].isin(codigos)].copy()
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d")
-    filename = f"precios_{fecha_actual}"
+    filename = f"precios_{fecha_actual}.xlsx"
 
     return df_filtrado, filename, df_filtrado["CÓDIGO"].tolist()
 
